@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YourName — GameTitle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --parchment: #F5EDD8;
+    --parchment-dark: #E8D9B8;
+    --ink: #2A1F0E;
+    --ink-soft: #4A3820;
+    --ember: #C4622D;
+    --ember-glow: #E8895A;
+    --gold: #B8883A;
+    --gold-light: #D4A855;
+    --moss: #4A6741;
+    --shadow: rgba(42, 31, 14, 0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--ink);
+    color: var(--parchment);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.25rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(20,14,5,0.95), transparent);
+    pointer-events: none;
+  }
+  nav * { pointer-events: auto; }
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-light);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--parchment-dark);
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 3rem 5rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 70% 40%, rgba(196, 98, 45, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 20% 80%, rgba(184, 136, 58, 0.08) 0%, transparent 60%),
+      #140E05;
+  }
+
+  .hero-map-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(184,136,58,0.5) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(184,136,58,0.5) 60px);
+    background-size: 60px 60px;
+  }
+
+  .hero-ornament {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 500px;
+    border: 1px solid rgba(184,136,58,0.08);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-ornament::before {
+    content: '';
+    position: absolute;
+    inset: 30px;
+    border: 1px solid rgba(184,136,58,0.05);
+    border-radius: 50%;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 680px; }
+
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ember-glow);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 40px; height: 1px;
+    background: var(--ember);
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--parchment);
+    margin-bottom: 0.3em;
+  }
+  h1 span { color: var(--gold-light); display: block; }
+
+  .hero-tagline {
+    font-size: 1.25rem;
+    font-style: italic;
+    color: rgba(245, 237, 216, 0.6);
+    margin-top: 1.5rem;
+    max-width: 480px;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+    padding: 0.75rem 1.75rem;
+    border: 1px solid var(--ember);
+    color: var(--parchment);
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: background 0.25s, color 0.25s;
+  }
+  .hero-cta:hover { background: var(--ember); color: var(--parchment); }
+  .hero-cta svg { width: 14px; height: 14px; }
+
+  .hero-scroll {
+    position: absolute;
+    right: 3rem;
+    bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,237,216,0.3);
+  }
+  .hero-scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, rgba(184,136,58,0.4), transparent);
+    animation: scrollline 2s ease-in-out infinite;
+  }
+  @keyframes scrollline {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(0.6); }
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 3rem;
+    margin: 4rem 0;
+    color: rgba(184,136,58,0.25);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(184,136,58,0.15);
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; }
+
+  .section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 1.25rem;
+  }
+
+  h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 400;
+    color: var(--parchment);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    max-width: 1100px;
+  }
+
+  .about-portrait {
+    position: relative;
+  }
+  .portrait-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #2A1F0E 0%, #1A1208 100%);
+    border: 1px solid rgba(184,136,58,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .portrait-frame::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(184,136,58,0.1);
+    pointer-events: none;
+  }
+  .portrait-placeholder {
+    font-family: 'Cinzel', serif;
+    font-size: 4rem;
+    color: rgba(184,136,58,0.2);
+    text-align: center;
+  }
+  .portrait-placeholder small {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(184,136,58,0.25);
+    margin-top: 0.5rem;
+  }
+  .portrait-caption {
+    position: absolute;
+    bottom: -1px; left: -1px; right: -1px;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(20,14,5,0.95), transparent);
+  }
+  .portrait-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--gold-light);
+  }
+  .portrait-role {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,237,216,0.4);
+    margin-top: 0.25rem;
+  }
+
+  .about-text p {
+    color: rgba(245, 237, 216, 0.75);
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+  .skill-tag {
+    padding: 0.35rem 0.9rem;
+    border: 1px solid rgba(184,136,58,0.25);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    background: rgba(184,136,58,0.05);
+  }
+
+  /* GAME */
+  .game-section {
+    background: linear-gradient(to bottom, transparent, rgba(196,98,45,0.04), transparent);
+  }
+
+  .game-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 4rem;
+  }
+
+  .game-cover {
+    aspect-ratio: 16/9;
+    background: #0D0905;
+    border: 1px solid rgba(184,136,58,0.15);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .game-cover-inner {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    color: rgba(184,136,58,0.15);
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .game-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at center, rgba(196,98,45,0.08) 0%, transparent 70%);
+  }
+  .game-cover-corner {
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: rgba(184,136,58,0.3);
+    border-style: solid;
+  }
+  .game-cover-corner.tl { top: 10px; left: 10px; border-width: 1px 0 0 1px; }
+  .game-cover-corner.tr { top: 10px; right: 10px; border-width: 1px 1px 0 0; }
+  .game-cover-corner.bl { bottom: 10px; left: 10px; border-width: 0 0 1px 1px; }
+  .game-cover-corner.br { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+
+  .game-meta { display: flex; flex-direction: column; justify-content: flex-end; }
+  .game-genre {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.75rem;
+  }
+  .game-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 600;
+    color: var(--parchment);
+    line-height: 1.05;
+    margin-bottom: 1rem;
+  }
+  .game-logline {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: rgba(245,237,216,0.55);
+    border-left: 2px solid var(--ember);
+    padding-left: 1rem;
+    margin-bottom: 2rem;
+  }
+  .game-desc {
+    font-size: 1rem;
+    color: rgba(245,237,216,0.7);
+    line-height: 1.8;
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .feature-card {
+    padding: 2rem;
+    border: 1px solid rgba(184,136,58,0.12);
+    background: rgba(184,136,58,0.03);
+    position: relative;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, var(--ember), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .feature-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    color: var(--gold-light);
+    margin-bottom: 0.6rem;
+  }
+  .feature-desc {
+    font-size: 0.9rem;
+    color: rgba(245,237,216,0.55);
+    line-height: 1.65;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    text-align: center;
+    padding: 7rem 3rem;
+    position: relative;
+  }
+  .contact-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 20%; right: 20%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(184,136,58,0.2), transparent);
+  }
+  .contact-section h2 { margin-bottom: 1rem; }
+  .contact-section p {
+    color: rgba(245,237,216,0.5);
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    font-size: 1rem;
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .contact-link.primary {
+    background: var(--ember);
+    color: var(--parchment);
+  }
+  .contact-link.primary:hover { background: var(--ember-glow); }
+  .contact-link.secondary {
+    border: 1px solid rgba(184,136,58,0.3);
+    color: var(--gold-light);
+  }
+  .contact-link.secondary:hover {
+    border-color: var(--gold-light);
+    background: rgba(184,136,58,0.08);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(184,136,58,0.1);
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer span {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: rgba(245,237,216,0.2);
+  }
+
+  /* ANIMATIONS */
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 0 1.5rem 4rem; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .game-header { grid-template-columns: 1fr; gap: 2.5rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .divider { padding: 0 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">YourName</a>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#game">Le jeu</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-map-overlay"></div>
+  <div class="hero-ornament"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Développeur indépendant · RPG & Aventure</p>
+    <h1>
+      Game<span>Title</span>
+    </h1>
+    <p class="hero-tagline">
+      Un voyage dans un monde forgé à la main, entre ombre et lumière.
+    </p>
+    <a href="#game" class="hero-cta">
+      Découvrir le projet
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M1 7h12M7 1l6 6-6 6"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Défiler</span>
+  </div>
+</section>
+
+<div class="divider">— Histoire</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-portrait fade-in">
+      <div class="portrait-frame">
+        <div class="portrait-placeholder">
+          ✦
+          <small>Votre photo</small>
+        </div>
+        <div class="portrait-caption">
+          <div class="portrait-name">YourName</div>
+          <div class="portrait-role">Développeur solo · Game Designer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-text fade-in">
+      <p class="section-label">À propos</p>
+      <h2>Façonneur de mondes</h2>
+      <p>
+        Passionné de jeux vidéo depuis toujours, je crée des expériences qui mêlent narration profonde, exploration libre et atmosphères soignées. Je crois que les petits jeux peuvent porter les plus grandes histoires.
+      </p>
+      <p>
+        Autodidacte ou formé en développement, je travaille seul sur l'ensemble de la chaîne — design, code, direction artistique — avec une exigence artisanale sur chaque détail.
+      </p>
+      <p>
+        <em>Remplacez ce texte par votre propre parcours, ce qui vous a amené à créer des jeux, et ce qui vous rend unique en tant que créateur.</em>
+      </p>
+      <div class="skills-list">
+        <span class="skill-tag">Game Design</span>
+        <span class="skill-tag">Unity · Godot</span>
+        <span class="skill-tag">Direction artistique</span>
+        <span class="skill-tag">Narration</span>
+        <span class="skill-tag">Pixel Art</span>
+        <span class="skill-tag">Sound Design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">— Le projet</div>
+
+<!-- GAME -->
+<section id="game" class="game-section">
+  <div class="game-header">
+    <div class="game-cover fade-in">
+      <div class="game-cover-corner tl"></div>
+      <div class="game-cover-corner tr"></div>
+      <div class="game-cover-corner bl"></div>
+      <div class="game-cover-corner br"></div>
+      <div class="game-cover-inner">
+        Capture d'écran<br>ou artwork
+      </div>
+    </div>
+    <div class="game-meta fade-in">
+      <p class="game-genre">RPG · Aventure · Solo</p>
+      <h2 class="game-title">GameTitle</h2>
+      <p class="game-logline">
+        "Une quête qui vous changera avant même d'en voir la fin."
+      </p>
+      <p class="game-desc">
+        Décrivez ici votre jeu en 2–3 phrases. Parlez du monde, du ton, de l'émotion que vous voulez transmettre. Qu'est-ce qui rend votre jeu unique ? Pourquoi vous a-t-il fallu le créer ?
+      </p>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card fade-in">
+      <span class="feature-icon">🗺</span>
+      <div class="feature-name">Monde ouvert</div>
+      <p class="feature-desc">Un territoire à explorer à votre rythme, chargé de secrets et de lieux oubliés.</p>
+    </div>
+    <div class="feature-card fade-in">
+      <span class="feature-icon">⚔</span>
+      <div class="feature-name">Combat tactique</div>
+      <p class="feature-desc">Des affrontements qui demandent réflexion et adaptabilité plutôt que simple réflexe.</p>
+    </div>
+    <div class="feature-card fade-in">
+      <span class="feature-icon">📖</span>
+      <div class="feature-name">Narration profonde</div>
+      <p class="feature-desc">Une histoire de vos choix, avec des personnages qui s'en souviennent vraiment.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider">— Contact</div>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <p class="section-label">Entrons en contact</p>
+  <h2>Intéressé par le projet ?</h2>
+  <p>Que vous soyez joueur curieux, journaliste, ou collaborateur potentiel — je serais ravi d'échanger.</p>
+  <div class="contact-links">
+    <a href="mailto:your@email.com" class="contact-link primary">Écrire un message</a>
+    <a href="https://twitter.com/" class="contact-link secondary">Twitter / X</a>
+    <a href="https://itch.io/" class="contact-link secondary">itch.io</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 YourName — Tous droits réservés</span>
+  <span>Fait avec passion</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
